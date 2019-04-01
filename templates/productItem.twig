@@ -1,0 +1,15 @@
+{% for product in products %}
+<div class="product-item">
+    <a href="?id={{ product.id }}">
+        <img src="/{{ product.image }}" alt="{{ product.name }}">
+    </a>
+    <h2>{{ product.name }}</h2>
+    <p>Price: {{ product.price }}$</p>
+
+    {% if session %}
+    <button class='add-btn' data-id='{{ product.id }}'>Add to Cart</button>
+    {% else %}
+    <h5>Sign in to shop</h5>
+    {% endif %}
+</div>
+{% endfor %}

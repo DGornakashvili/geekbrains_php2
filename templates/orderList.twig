@@ -1,0 +1,57 @@
+{% for order in orders %}
+    <div class="orders-item" data-id="{{ order.id }}">
+        <div class="item-status">
+            <p>Order №{{ order.id }}</p>
+
+            {% if session.role %}
+                <input type='number' value="{{ order.status }}" min='1' max='4'>
+            {% else %}
+                <p>Status:
+                    <span class="order-status">
+                {% if order.status == 1 %}
+                    Active
+                {% elseif order.status == 2 %}
+                    Cancelled
+                {% elseif order.status == 3 %}
+                    Paid
+                {% else %}
+                    Delivered
+                {% endif %}
+                    </span>
+                </p>
+            {% endif %}
+
+        </div>
+        <div class="items-title">
+            <p>Image</p>
+            <p>Title</p>
+            <p>Price</p>
+            <p>Quantity</p>
+            <p>Total</p>
+        </div>
+
+        {% set total = 0 %}
+
+        {% for item in order.order %}
+
+            {% set total = total + item.product.price * item.amount %}
+
+            <div class="item-details">
+                <p><img src="/{{ item.product.image }}" alt="{{ item.product.name }}"></p>
+                <p>{{ item.product.name }}</p>
+                <p>{{ item.product.price }}$</p>
+                <p>{{ item.amount }}</p>
+                <p>{{ item.product.price * item.amount }}$</p>
+            </div>
+
+        {% endfor %}
+        <div class="item-controls">
+            <p>Grand total: <span>{{ total }}$</span></p>
+            {% if session.role and order.status != 4 %}
+                <button class='status-btn' data-id="{{ order.id }}">Update status</button>
+            {% elseif order.status == 1 or order.status == 3 %}
+                <button class='cancel-btn' data-id="{{ order.id }}">Cancel</button>
+            {% endif %}
+        </div>
+    </div>
+{% endfor %}

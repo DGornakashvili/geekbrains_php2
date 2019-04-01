@@ -1,0 +1,15 @@
+{% extends "index.twig" %}
+
+{% block body %}
+<div class="userAccount">
+    <h2>Welcome!</h2>
+    <div class="recently-visited">
+        <h4>Recently visited pages</h4>
+        <div class="recently-visited-pages">
+            {% for page in pages %}
+            <a href="{{ page.url }}">{{ page.name }}</a>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

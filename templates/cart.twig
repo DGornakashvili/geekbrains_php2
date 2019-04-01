@@ -1,0 +1,12 @@
+{% extends 'index.twig' %}
+
+{% block css %}product.css{% endblock %}
+
+{% block body %}
+    <div class="user-cart">
+
+        {% include 'cartItem.twig' %}
+
+    </div>
+    <button class="order-btn">Order</button>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends "index.twig" %}
+
+{% block css %}product.css{% endblock %}
+
+{% block sign %}
+{% endblock %}
+
+{% block body %}
+
+<div class="single-product">
+    <h1>{{ product.name }}</h1>
+    <p>Price: {{ product.price }}$</p>
+    <p>{{ product.description }}</p>
+    <a href="/products/">X</a>
+    <img src="/{{ product.image }}" alt="{{ product.name }}">
+</div>
+
+{% endblock %}
+
+{% block cart %}
+{% endblock %}
