@@ -30,8 +30,7 @@ class ApiController extends Controller
                 $newPage = ++$page;
                 $responseType = 'else';
                 $responseData = $this->render([
-                    'products' => $products,
-                    'userStatus' => isset($this->app->session['login']) ? true : false
+                    'products' => $products
                 ]);
 
                 if (empty($responseData)) {

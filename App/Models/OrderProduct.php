@@ -16,7 +16,7 @@ namespace App\Models;
  */
 class OrderProduct extends Model
 {
-    protected static $table = 'orderProducts';
+    protected static $table = 'orderproducts';
     protected static $schema = [
         [
             'name' => 'id',
