@@ -4,28 +4,32 @@ namespace App\Models;
 
 use App\Classes\DB;
 
+/**
+ * Class Model
+ * @package App\Models
+ */
 abstract class Model
 {
     /**
-     * Имя таблицы
-     * @var $table
+     * @var string $table имя таблицы
      */
     protected static $table;
     /**
-     * Имя первичного ключа
-     * @var string $primaryKey
+     * @var string $primaryKey имя первичного ключа
      */
     protected static $primaryKey = 'id';
     /**
-     * Схема модели
+     * @var array $schema схема модели
      * [
      *   'name' => string, //название поля в БД
      *   'type' => string //int|string|float|bool тип поля
      *   'nullable' => bool (true) //может ли быть null
      * ][]
-     * @var array $schema
      */
     protected static $schema = [];
+    /**
+     * @var array $attributes элементы экземпляра //['название поля' => 'значение']
+     */
     protected $attributes = [];
 
     public function __construct($attributes)
@@ -72,13 +76,13 @@ abstract class Model
     }
 
     /**
-     * А-ля строитель запросов. Ему передаем все данные, он возвращает SQL строку
+     * Генерирует SQL запрос
      * @param array|null $select //каждый элемент или строка colName или ключ - colName, значение - alias
      * @param array|null $filters //каждый элемент имеет вид ['col' => 'id', 'oper' => '=', 'value' => '1']
      * @param array|null $orders //каждый элемент имеет вид ['col' => 'id', 'direction' => 'asc']
      * @param int|null $limitCount //количество элементов выдаче
      * @param int|null $limitOffset //с какого элемента начинать выдачу
-     * @return string
+     * @return string SQL запрос
      */
     public static function queryBuilder(
         ?array $select = [],
@@ -160,7 +164,7 @@ abstract class Model
     }
 
     /**
-     * Бывший fetchAll. Получает коллекцию моделей
+     * Получает коллекцию моделей
      * @param array|null $filters
      * @param array|null $orders
      * @param int|null $limitCount
@@ -186,7 +190,7 @@ abstract class Model
     }
 
     /**
-     * Бывший fetchOne, возвращает первый элемент выборки
+     * Возвращает первый элемент выборки
      * @param array|null $filters
      * @param array|null $orders
      * @return static
@@ -213,9 +217,8 @@ abstract class Model
     }
 
     /**
-     * Возвращает количество элементов в выборке
      * @param array|null $filters
-     * @return int
+     * @return int количество элементов в выборке
      */
     public static function getCount(?array $filters = []): int
     {
@@ -225,9 +228,10 @@ abstract class Model
     }
 
     /**
+     * Добавляет или изменяет элемент в БД
      * @return Model
      */
-    public function save()
+    public function save(): self
     {
         $table = static::$table;
         $primary = static::$primaryKey;
@@ -267,15 +271,20 @@ abstract class Model
             }
             $sql .= '(' . implode(', ', $cols) . ') VALUES (' . implode(', ', $values) . ')';
         }
+
         DB::getInstance()->exec($sql);
+        $itemId = DB::getInstance()->lastInsertId();
+        $this->attributes[static::$primaryKey] = $itemId;
+
         return $this;
     }
 
     /**
-     * @param array $ids
+     * Удаляет один или несколько элементов из БД
+     * @param array|null $ids [int, int..]
      * @return bool
      */
-    public function delete(array $ids = [])
+    public function delete(array $ids = []): bool
     {
         if (static::$table !== 'baskets' && (int)($_SESSION['login']->role) !== 1) {
             exit();
@@ -295,8 +304,6 @@ abstract class Model
             $sql .= "$primary = '{$this->attributes[$primary]}'";
         }
 
-        DB::getInstance()->exec($sql);
-
-        return true;
+        return DB::getInstance()->exec($sql);
     }
 }

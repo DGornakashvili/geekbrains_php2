@@ -5,7 +5,6 @@ namespace App\Models;
 /**
  * Class Product
  * @package App\Models
- *
  * @property int $id
  * @property string $name
  * @property string $description

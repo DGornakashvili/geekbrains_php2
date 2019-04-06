@@ -5,7 +5,6 @@ namespace App\Models;
 /**
  * Class OrderProduct
  * @package App\Models
- *
  * @property int $id
  * @property int $orderId
  * @property int $productId

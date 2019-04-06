@@ -5,7 +5,6 @@ namespace App\Models;
 /**
  * Class Basket
  * @package App\Models
- *
  * @property int $id
  * @property int $userId
  * @property int $productId
@@ -35,7 +34,7 @@ class Basket extends Model
     ];
 
     /**
-     * Надостройка над get, что бы получить сразу с продуктами (реализация many-to-many)
+     * Надостройка над get, что бы получить сразу с товарами
      * @param array|null $filters
      * @param array|null $orders
      * @param int|null $limitCount
@@ -63,13 +62,13 @@ class Basket extends Model
             'value' => '(' . implode(', ', $ids) . ')',
         ]]);
         //INDEX BY KEY
-        //Превращаем нашу в коллекцию в индексированную, то есть вида
+        //Превращаем нашу коллекцию в индексированную, то есть вида
         //[productId => Product]
         $indexedProducts = [];
         foreach ($products as $product) {
             $indexedProducts[$product->id] = $product;
         }
-        //Добавляем каждому элементы корзины сам товар
+        //Добавляем каждому элементу корзины сам товар
         foreach ($basket as &$item) {
             $item->product = $indexedProducts[$item->productId] ?? null;
         }

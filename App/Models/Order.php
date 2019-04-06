@@ -5,7 +5,6 @@ namespace App\Models;
 /**
  * Class Order
  * @package App\Models
- *
  * @property int $id
  * @property int $userId
  * @property string $address
@@ -45,6 +44,7 @@ class Order extends Model
     ];
 
     /**
+     * Надостройка над get, что бы получить сразу с товарами
      * @param array|null $filters
      * @param array|null $orders
      * @param int|null $limitCount

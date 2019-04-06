@@ -7,28 +7,29 @@ class AccountController extends Controller
     protected $template = 'userAccount.twig';
 
     /**
-     * @param array $data
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * Выводит личный кабинет
+     * @return string личный кибинет пользователя
+     * @throws - ошибки шаблонизатора
      */
-    public function index($data = [])
+    public function index(): string
     {
-        if (!isset($this->app->session['login'])) {
-            $result = "<h1>Sign in first!!!</h1>";
-        } else {
-            $pages = $this->app->session['visited'];
-
-            if (!empty($pages)) {
-                array_reverse($pages);
-            }
-
-            $result = $this->render([
-                'title' => 'Account',
-                'pages' => $pages
-            ]);
+        /**
+         * если не авторизован, переводит на страницу авторизации
+         */
+        if (empty($this->app->session['login'])) {
+            header('Location: /sign/');
+            die;
         }
-        return $result;
+
+        $pages = $this->app->session['visited'];
+
+        if (!empty($pages)) {
+            array_reverse($pages);
+        }
+
+        return $this->render([
+            'title' => 'Account',
+            'pages' => $pages
+        ]);
     }
 }

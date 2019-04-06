@@ -4,16 +4,22 @@ namespace App\Controllers;
 
 use App\App;
 use App\Classes\TemplateEngine;
+use Twig;
 
 abstract class Controller
 {
-    protected $template;
     /**
-     * @var \Twig\Environment
+     * @var string $template шаблон по умолчанию
+     */
+    protected $template;
+
+    /**
+     * @var Twig\Environment Шаблонизатор
      */
     protected $twig;
+
     /**
-     * @var App
+     * @var App $app
      */
     protected $app;
 
@@ -24,12 +30,12 @@ abstract class Controller
     }
 
     /**
-     * @param array $params
-     * @param string|null $template
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @param array $params Данные для отображения в шаблоне ['ключ' => 'данные']
+     * @param string|null $template Шаблон страници или ее части (блока), если не передан дефолтный
+     * @return string Собранный шаблон
+     * @throws Twig\Error\LoaderError
+     * @throws Twig\Error\RuntimeError
+     * @throws Twig\Error\SyntaxError
      */
     protected function render(?array $params = [], ?string $template = null): string
     {

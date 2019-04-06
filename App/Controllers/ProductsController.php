@@ -10,11 +10,11 @@ class ProductsController extends Controller
     protected $template = 'products.twig';
 
     /**
-     * @param array $data
-     * @return string
-     * @throws Exception
+     * Выводит страницу продуктов
+     * @return string страница продуктов, если передан id, соответствеющий продукт
+     * @throws Exception Если пользователь не авторизован
      */
-    public function index($data = [])
+    public function index(): string
     {
         if (isset($this->app->session['login'])) {
             $this->app->session['productsCount'] = Product::getCount();
@@ -23,13 +23,22 @@ class ProductsController extends Controller
             if (isset($_GET['id'])) {
                 $id = (int)($_GET['id'] ?? 0);
                 $this->template = 'singleProduct.twig';
+
+                /**
+                 * @var Product $product
+                 */
                 $product = Product::getByKey($id);
+
                 $renderData = [
                     'title' => "Product $id",
                     'product' => $product
                 ];
             } else {
+                /**
+                 * @var Product $products
+                 */
                 $products = Product::get(null, null, 15, 0);
+
                 $renderData = [
                     'title' => 'Products',
                     'products' => $products

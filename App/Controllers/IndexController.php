@@ -9,27 +9,34 @@ class IndexController extends Controller
     protected $template = 'index.twig';
 
     /**
-     * @param array $data
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * Главная страница
+     * @return string главная страница, если передан id, соответствеющее изображение
+     * @throws - ошибки шаблонизатора
      */
-    public function index($data = [])
+    public function index(): string
     {
         if (isset($_GET['id'])) {
             $id = (int)$_GET['id'];
 
             $this->template = 'singleImg.twig';
+
+            /**
+             * @var Image $image
+             */
             $image = Image::getByKey($id);
             $image->views++;
             $image->save();
+
             $renderData = [
                 'title' => "Image $id",
                 'img' => $image
             ];
         } else {
-            $images = Image::get(null,[['col' => 'views', 'direction' => 'desc']]);
+            /**
+             * @var Image $images
+             */
+            $images = Image::get([],[['col' => 'views', 'direction' => 'desc']]);
+
             $renderData = [
                 'title' => 'Gallery',
                 'images' => $images

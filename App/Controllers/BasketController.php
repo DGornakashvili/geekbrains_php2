@@ -7,15 +7,18 @@ use App\Models\User;
 
 class BasketController extends Controller
 {
+    protected $template = 'cart.twig';
+
     /**
      * Выводит страницу корзины
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * @return string страница корзины
+     * @throws - ошибки шаблонизатора
      */
-    public function index()
+    public function index(): string
     {
+        /**
+         * если не авторизован, переводит на страницу авторизации
+         */
         if (empty($this->app->session['login'])) {
             header('Location: /sign/');
             die;
@@ -24,7 +27,7 @@ class BasketController extends Controller
          * @var User $user
          */
         $user = $this->app->session['login'];
-        $this->template = 'cart.twig';
+
         return $this->render([
             'basket' => $user->getBasket()
         ]);

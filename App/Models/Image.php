@@ -5,12 +5,11 @@ namespace App\Models;
 /**
  * Class Image
  * @package App\Models
- *
  * @property int $id
  * @property string $url
  * @property int $views
  * @property string $title
- * @property string $size
+ * @property string|null $size
  */
 class Image extends Model
 {

@@ -10,7 +10,7 @@ namespace App\Models;
  * @property string $dateChange
  * @property string $name
  * @property bool $isActive
- * @property int|null $parentId
+ * @property int $parentId
  */
 class Category extends Model
 {

@@ -14,7 +14,14 @@ class TemplateEngine
 
     protected function __construct()
     {
+        /**
+         * Устанавливает директорию шаблонов
+         */
         $loader = new FilesystemLoader(TPL_DIR);
+
+        /**
+         * Инициализурет шаблонизатор
+         */
         $this->twig = new Environment($loader);
     }
 }

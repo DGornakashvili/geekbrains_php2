@@ -5,6 +5,9 @@ namespace App\Classes;
 use App\Traits\SingletonTrait;
 use \PDO;
 
+/**
+ * Class DB
+ */
 class DB
 {
     use SingletonTrait;
@@ -15,9 +18,14 @@ class DB
     {
         $this->pdo = new PDO(DB_DNS, DB_USER, DB_PASS);
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->pdo->exec('SET NAMES utf8');
     }
 
-    public function fetchOne($sql)
+    /**
+     * @param $sql
+     * @return array
+     */
+    public function fetchOne($sql): array
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute();
@@ -25,7 +33,11 @@ class DB
         return $sth->fetch(PDO::FETCH_ASSOC);
     }
 
-    public function fetchAll($sql)
+    /**
+     * @param $sql
+     * @return array
+     */
+    public function fetchAll($sql): array
     {
         $sth = $this->pdo->prepare($sql);
         $sth->execute();
@@ -33,9 +45,22 @@ class DB
         return $sth->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    /**
+     * @param $sql
+     * @return bool
+     */
     public function exec($sql)
     {
         $sth = $this->pdo->prepare($sql);
-        $sth->execute();
+        return $sth->execute();
+    }
+
+    /**
+     * Получить id последней вставленной строки
+     * @return int
+     */
+    public function lastInsertId()
+    {
+        return $this->pdo->lastInsertId();
     }
 }

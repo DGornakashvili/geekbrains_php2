@@ -7,8 +7,17 @@ use App\Models\User;
 class SignController extends Controller
 {
     protected $template = 'signForm.twig';
+    /**
+     * @var string Имя пользователя
+     */
     protected $name;
+    /**
+     * @var string Логин пользователя
+     */
     protected $login;
+    /**
+     * @var string Пароль пользователя
+     */
     protected $password;
 
     public function __construct()
@@ -20,19 +29,16 @@ class SignController extends Controller
     }
 
     /**
-     * @param array $data
-     * @return string|void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * Авторизация пользователя
+     * @return string|void страница авторизации
+     * @throws - ошибки шаблонизатора
      */
-    public function index($data = [])
+    public function index()
     {
         if (!isset($this->app->session['login'])) {
             if (!(isset($_POST['login']) && isset($_POST['password']))) {
                 return $this->render(['title' => 'Sign in']);
             } else {
-
                 $user = User::getOne([
                     [
                         'col' => 'login',
@@ -52,17 +58,16 @@ class SignController extends Controller
                     return header('Location: /account/');
                 } else {
                     echo "<h2>User with Login: $this->login doesn't exist!</h2>";
-                    return $this->render();
+                    return $this->render(['title' => 'Sign in']);
                 }
             }
         }
     }
 
     /**
-     * @return string|void
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * Регистрация пользователя
+     * @return string|void страница регистрации
+     * @throws - ошибки шаблонизатора
      */
     public function up()
     {
@@ -71,11 +76,15 @@ class SignController extends Controller
         if (!(isset($_POST['login']) && isset($_POST['password']))) {
             return $this->render(['title' => 'Sign up',]);
         } else {
-            $user = (new User([
+            /**
+             * @var User $user
+             */
+            $user = new User([
                 'name' => $this->name,
                 'login' => $this->login,
                 'password' => $this->password
-            ]))->save();
+            ]);
+            $user->save();
 
             if ($user) {
                 $this->app->session['login'] = $user;
@@ -83,13 +92,13 @@ class SignController extends Controller
                 return header('Location: /account/');
             } else {
                 echo "<h2>404! Please, try again later!</h2>";
-                return $this->render();
+                return $this->render(['title' => 'Sign up',]);
             }
         }
     }
 
     /**
-     *
+     * Выход пользователя
      */
     public function out()
     {

@@ -3,7 +3,6 @@
 
 namespace App\Controllers;
 use App\Models\Order;
-use App\Models\Product;
 use App\Models\User;
 use \Exception;
 
@@ -12,19 +11,20 @@ class OrderController extends Controller
     protected $template = 'orders.twig';
 
     /**
-     * Выводит страницу заказа
-     * @param array $data
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws \Twig\Error\RuntimeError
-     * @throws \Twig\Error\SyntaxError
+     * Выводит страницу заказов
+     * @return string страница заказов пользователя
+     * @throws - ошибки шаблонизатора
      */
-    public function index(array $data = [])
+    public function index(): string
     {
+        /**
+         * если не авторизован, переводит на страницу авторизации
+         */
         if (empty($this->app->session['login'])) {
             header('Location: /sign/');
             die;
         }
+
         /**
          * @var User $user
          */
@@ -37,12 +37,15 @@ class OrderController extends Controller
     }
 
     /**
-     * @param array $data
-     * @return string
-     * @throws Exception
+     * Выводит страницу заказов если пользователь администратор
+     * @return string страница с заказами всех пользователей
+     * @throws Exception если не администратор
      */
-    public function getAllOrders(array $data = [])
+    public function getAllOrders(): string
     {
+        /**
+         * если не авторизован, переводит на страницу авторизации
+         */
         if (empty($this->app->session['login'])) {
             header('Location: /sign/');
             die;
@@ -52,6 +55,9 @@ class OrderController extends Controller
             throw new Exception('Access dined!');
         }
 
+        /**
+         * @var array Order $orders
+         */
         $orders = Order::getWithProducts();
         arsort($orders);
 

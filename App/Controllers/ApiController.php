@@ -7,10 +7,15 @@ use App\Models\Basket;
 use App\Models\Order;
 use App\Models\OrderProduct;
 use App\Models\Product;
+use App\Models\User;
 use \Exception;
 
 class ApiController extends Controller
 {
+    /**
+     * Выводит еще 15 товаров, если есть в БД
+     * @throws Exception
+     */
     public function showMore()
     {
         try {
@@ -25,6 +30,9 @@ class ApiController extends Controller
                 $count = $page * 15;
 
                 $this->template = 'productItem.twig';
+                /**
+                 * @var Product $products
+                 */
                 $products = Product::get(null, null, 15, $count);
 
                 $newPage = ++$page;
@@ -57,6 +65,10 @@ class ApiController extends Controller
     {
         try {
             $productId = (int)$_POST['id'] ?? 0;
+
+            /**
+             * @var User $user
+             */
             $user = $this->app->session['login'] ?? null;
 
             if (!$user) {
@@ -66,6 +78,10 @@ class ApiController extends Controller
             if (!$productId) {
                 throw new Exception("Product with ID: $productId doesn't exist!");
             }
+
+            /**
+             * @var Basket $basket
+             */
             $basket = Basket::getOne([
                 [
                     'col' => 'userId',
@@ -78,6 +94,7 @@ class ApiController extends Controller
                     'value' => $productId
                 ]
             ]);
+
             if (!$basket) {
                 $basket = new Basket([
                     'userId' => $user->id,
@@ -110,6 +127,9 @@ class ApiController extends Controller
             $data = $_POST ?? null;
             $id = (int)$data['id'] ?? 0;
 
+            /**
+             * @var Basket $basketItem
+             */
             $basketItem = Basket::getByKey($id);
             if (!$basketItem) {
                 throw new Exception("Your cart doesn't exist yet!");
@@ -146,6 +166,9 @@ class ApiController extends Controller
             $data = $_POST ?? null;
             $id = (int)$data['id'] ?? 0;
 
+            /**
+             * @var Order $order
+             */
             $order = Order::getByKey($id);
             if (!$order) {
                 throw new Exception("Order doesn't exist!");
@@ -163,29 +186,34 @@ class ApiController extends Controller
         exit();
     }
 
+    /**
+     * Формирует и сохраняет в БД заказ
+     * @throws Exception
+     */
     public function order()
     {
         try {
+            /**
+             * @var User $user
+             */
             $user = $this->app->session['login'];
 
             if (!$user) {
                 throw new Exception('Sign in first!');
             }
+            /**
+             * @var Basket $basket
+             */
             $basket = $user->getBasket();
 
+            /**
+             * @var Order $order
+             */
             $order = new Order([
                 'userId' => $user->id
             ]);
 
             $order->save();
-
-            $order = $order->getOne([
-                [
-                    'col' => 'userId',
-                    'oper' => '=',
-                    'value' => $user->id
-                ]
-            ],[['col' => 'id', 'direction' => 'desc']]);
 
             $basketIds = [];
             foreach ($basket as $product) {
@@ -198,7 +226,6 @@ class ApiController extends Controller
                 ]);
                 $orderItem->save();
             }
-            $basket = new Basket([]);
 
             $basket->delete($basketIds);
 
