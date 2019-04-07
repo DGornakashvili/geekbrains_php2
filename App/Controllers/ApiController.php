@@ -14,54 +14,50 @@ class ApiController extends Controller
 {
     /**
      * Выводит еще 15 товаров, если есть в БД
-     * @throws Exception
+     * @return string данные в формате JSON
      */
-    public function showMore()
+    public function showMore(): string
     {
         try {
             if (empty($this->app->session['login'])) {
                 throw new Exception('Sign in first!');
             }
+            $productsCount = (int)($this->app->session['productsCount'] ?? 0);
+            $page = (int)($this->app->session['productsPage'] ?? 0);
+            $count = $page * 15;
 
-            $method = $_POST['method'] ?? '';
-            if ($method === 'showMore') {
-                $productsCount = (int)($this->app->session['productsCount'] ?? 0);
-                $page = (int)($this->app->session['productsPage'] ?? 0);
-                $count = $page * 15;
+            $this->template = 'productItem.twig';
+            /**
+             * @var Product $products
+             */
+            $products = Product::get(null, null, 15, $count);
 
-                $this->template = 'productItem.twig';
-                /**
-                 * @var Product $products
-                 */
-                $products = Product::get(null, null, 15, $count);
+            $newPage = ++$page;
+            $responseType = 'else';
+            $responseData = $this->render([
+                'products' => $products
+            ]);
 
-                $newPage = ++$page;
-                $responseType = 'else';
-                $responseData = $this->render([
-                    'products' => $products
-                ]);
-
-                if (empty($responseData)) {
-                    throw new Exception('There are no more products!');
-                }
-
-                if ($newPage * 15 >= $productsCount) {
-                    $responseType = '';
-                }
-
-                $_SESSION['productsPage'] = $newPage;
-                Functions::ajaxResponse($responseType, $responseData);
+            if (empty($responseData)) {
+                throw new Exception('There are no more products!');
             }
+
+            if ($newPage * 15 >= $productsCount) {
+                $responseType = '';
+            }
+            $_SESSION['productsPage'] = $newPage;
+
+            return Functions::ajaxResponse($responseType, $responseData);
         } catch (Exception $e) {
-            Functions::ajaxResponse('error', $e->getMessage(), true);
+            return Functions::ajaxResponse('error', $e->getMessage(), true);
         }
-        exit();
     }
 
     /**
-     *
+     * Добавляет товар в корзину
+     * @return string данные в формате JSON
      */
-    public function addToCart()
+    public function addToCart(): string
     {
         try {
             $productId = (int)$_POST['id'] ?? 0;
@@ -110,18 +106,17 @@ class ApiController extends Controller
                 $type = 'add';
             }
 
-            Functions::ajaxResponse($type, $basket->amount);
+            return Functions::ajaxResponse($type, $basket->amount);
         } catch (Exception $e) {
-            Functions::ajaxResponse('error', $e->getMessage(), true);
+            return Functions::ajaxResponse('error', $e->getMessage(), true);
         }
-        exit();
     }
 
     /**
      * Изменяет количество товара в корзине или удаляет, если количество = 0
-     * @throws Exception
+     * @return string данные в формате JSON
      */
-    public function update()
+    public function update(): string
     {
         try {
             $data = $_POST ?? null;
@@ -149,18 +144,17 @@ class ApiController extends Controller
                 $basketItem->delete();
             }
 
-            Functions::ajaxResponse('update', $basketItem->amount);
+            return Functions::ajaxResponse('update', $basketItem->amount);
         } catch (Exception $e) {
-            Functions::ajaxResponse('error', $e->getMessage(), true);
+            return Functions::ajaxResponse('error', $e->getMessage(), true);
         }
-        exit();
     }
 
     /**
      * Изменяет статус заказа
-     * @throws Exception
+     * @return string данные в формате JSON
      */
-    public function status()
+    public function status(): string
     {
         try {
             $data = $_POST ?? null;
@@ -179,18 +173,17 @@ class ApiController extends Controller
 
             $order->save();
 
-            Functions::ajaxResponse('update', $order->status);
+            return Functions::ajaxResponse('update', $order->status);
         } catch (Exception $e) {
-            Functions::ajaxResponse('error', $e->getMessage(), true);
+            return Functions::ajaxResponse('error', $e->getMessage(), true);
         }
-        exit();
     }
 
     /**
      * Формирует и сохраняет в БД заказ
-     * @throws Exception
+     * @return string данные в формате JSON
      */
-    public function order()
+    public function order(): string
     {
         try {
             /**
@@ -229,10 +222,9 @@ class ApiController extends Controller
 
             $basket->delete($basketIds);
 
-            Functions::ajaxResponse('newOrder', $order->id);
+            return Functions::ajaxResponse('newOrder', $order->id);
         } catch (Exception $e) {
-            Functions::ajaxResponse('error', $e->getMessage(), true);
+            return Functions::ajaxResponse('error', $e->getMessage(), true);
         }
-        exit();
     }
 }
