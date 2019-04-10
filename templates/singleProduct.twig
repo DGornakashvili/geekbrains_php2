@@ -7,13 +7,13 @@
 
 {% block body %}
 
-<div class="single-product">
-    <h1>{{ product.name }}</h1>
-    <p>Price: {{ product.price }}$</p>
-    <p>{{ product.description }}</p>
-    <a href="/products/">X</a>
-    <img src="/{{ product.image }}" alt="{{ product.name }}">
-</div>
+	<div class="single-product">
+		<h1>{{ product.name }}</h1>
+		<p>Price: {{ product.price }}$</p>
+		<p>{{ product.description }}</p>
+		<a href="/products/">X</a>
+		<img src="/{{ product.image }}" alt="{{ product.name }}">
+	</div>
 
 {% endblock %}
 

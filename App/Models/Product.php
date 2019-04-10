@@ -17,45 +17,45 @@ namespace App\Models;
  */
 class Product extends Model
 {
-    protected static $table = 'products';
-    protected static $schema = [
-        [
-            'name' => 'id',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'name',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'description',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'price',
-            'type' => 'float'
-        ],
-        [
-            'name' => 'image',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'dateCreate',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'dateChange',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'isActive',
-            'type' => 'bool'
-        ],
-        [
-            'name' => 'categoryId',
-            'type' => 'int'
-        ]
-    ];
+	protected static $table = 'products';
+	protected static $schema = [
+		[
+			'name' => 'id',
+			'type' => 'int'
+		],
+		[
+			'name' => 'name',
+			'type' => 'string'
+		],
+		[
+			'name' => 'description',
+			'type' => 'string'
+		],
+		[
+			'name' => 'price',
+			'type' => 'float'
+		],
+		[
+			'name' => 'image',
+			'type' => 'string'
+		],
+		[
+			'name' => 'dateCreate',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'dateChange',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'isActive',
+			'type' => 'bool'
+		],
+		[
+			'name' => 'categoryId',
+			'type' => 'int'
+		]
+	];
 }

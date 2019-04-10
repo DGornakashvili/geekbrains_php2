@@ -14,33 +14,33 @@ namespace App\Models;
  */
 class Category extends Model
 {
-    protected static $table = 'categories';
-    protected static $schema = [
-        [
-            'name' => 'id',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'dateCreate',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'dateChange',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'name',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'isActive',
-            'type' => 'bool'
-        ],
-        [
-            'name' => 'parentId',
-            'type' => 'int'
-        ]
-    ];
+	protected static $table = 'categories';
+	protected static $schema = [
+		[
+			'name' => 'id',
+			'type' => 'int'
+		],
+		[
+			'name' => 'dateCreate',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'dateChange',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'name',
+			'type' => 'string'
+		],
+		[
+			'name' => 'isActive',
+			'type' => 'bool'
+		],
+		[
+			'name' => 'parentId',
+			'type' => 'int'
+		]
+	];
 }

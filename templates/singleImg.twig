@@ -2,15 +2,15 @@
 
 {% block body %}
 
-{% block sign %}
-{% endblock %}
+	{% block sign %}
+	{% endblock %}
 
-<div class="galleryWrapper">
-    <h1>{{ img.title }}</h1>
-    <p>Views: {{ img.views }}</p>
-    <a href="/">X</a>
-    <img src="{{ img.url }}" alt="{{ img.title }}">
-</div>
+	<div class="galleryWrapper">
+		<h1>{{ img.title }}</h1>
+		<p>Views: {{ img.views }}</p>
+		<a href="/">X</a>
+		<img src="{{ img.url }}" alt="{{ img.title }}">
+	</div>
 
 {% endblock %}
 

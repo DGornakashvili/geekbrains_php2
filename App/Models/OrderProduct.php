@@ -15,42 +15,42 @@ namespace App\Models;
  */
 class OrderProduct extends Model
 {
-    protected static $table = 'orderproducts';
-    protected static $schema = [
-        [
-            'name' => 'id',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'orderId',
-            'type' => 'int',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'productId',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'price',
-            'type' => 'float'
-        ],
-        [
-            'name' => 'dateCreate',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'dateChange',
-            'type' => 'string',
-            'nullable' => true,
-        ],
-        [
-            'name' => 'amount',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'status',
-            'type' => 'int'
-        ]
-    ];
+	protected static $table = 'orderproducts';
+	protected static $schema = [
+		[
+			'name' => 'id',
+			'type' => 'int'
+		],
+		[
+			'name' => 'orderId',
+			'type' => 'int',
+			'nullable' => true,
+		],
+		[
+			'name' => 'productId',
+			'type' => 'int'
+		],
+		[
+			'name' => 'price',
+			'type' => 'float'
+		],
+		[
+			'name' => 'dateCreate',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'dateChange',
+			'type' => 'string',
+			'nullable' => true,
+		],
+		[
+			'name' => 'amount',
+			'type' => 'int'
+		],
+		[
+			'name' => 'status',
+			'type' => 'int'
+		]
+	];
 }

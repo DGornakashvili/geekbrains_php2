@@ -13,49 +13,57 @@ namespace App\Models;
  */
 class User extends Model
 {
-    protected static $table = 'users';
-    protected static $schema = [
-        [
-            'name' => 'id',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'name',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'login',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'password',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'role',
-            'type' => 'int'
-        ],
-    ];
+	protected static $table = 'users';
+	protected static $schema = [
+		[
+			'name' => 'id',
+			'type' => 'int'
+		],
+		[
+			'name' => 'name',
+			'type' => 'string'
+		],
+		[
+			'name' => 'login',
+			'type' => 'string'
+		],
+		[
+			'name' => 'password',
+			'type' => 'string'
+		],
+		[
+			'name' => 'role',
+			'type' => 'int'
+		],
+	];
 
-    public function getBasket()
-    {
-        return Basket::getWithProducts([
-            [
-                'col' => 'userId',
-                'oper' => '=',
-                'value' => $this->id
-            ],
-        ]);
-    }
+	public function getBasket()
+	{
+		return Basket::getWithProducts([
+			[
+				'col' => 'userId',
+				'oper' => '=',
+				'value' => $this->id
+			],
+		]);
+	}
 
-    public function getOrders()
-    {
-        return Order::getWithProducts([
-            [
-                'col' => 'userId',
-                'oper' => '=',
-                'value' => $this->id
-            ]
-        ]);
-    }
+	public function getOrders()
+	{
+		return Order::getWithProducts(
+			[
+				[
+					'col' => 'userId',
+					'oper' => '=',
+					'value' => $this->id
+				]
+			],
+			[
+				[
+					'col' => 'id',
+					'direction' => 'desc'
+				]
+			]
+		);
+	}
 }

@@ -1,9 +1,9 @@
 {% for item in basket %}
-<div class="cart-item" data-id="{{ item.id }}">
-    <img src="/{{ item.product.image }}" alt="{{ item.product.name }}">
-    <h4>{{ item.product.name }}</h4>
-    <p>Price: {{ item.product.price }}$</p>
-    <p>Quantity: <span>{{ item.amount }}</span></p>
-    <button class="remove-btn" data-id="{{ item.id }}">Remove</button>
-</div>
+	<div class="cart-item" data-id="{{ item.id }}">
+		<img src="/{{ item.product.image }}" alt="{{ item.product.name }}">
+		<h4>{{ item.product.name }}</h4>
+		<p>Price: {{ item.product.price }}$</p>
+		<p>Quantity: <span>{{ item.amount }}</span></p>
+		<button class="remove-btn" data-id="{{ item.id }}">Remove</button>
+	</div>
 {% endfor %}

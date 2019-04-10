@@ -13,28 +13,28 @@ namespace App\Models;
  */
 class Image extends Model
 {
-    protected static $table = 'images';
-    protected static $schema = [
-        [
-            'name' => 'id',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'url',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'views',
-            'type' => 'int'
-        ],
-        [
-            'name' => 'title',
-            'type' => 'string'
-        ],
-        [
-            'name' => 'size',
-            'type' => 'string',
-            'nullable' => true
-        ]
-    ];
+	protected static $table = 'images';
+	protected static $schema = [
+		[
+			'name' => 'id',
+			'type' => 'int'
+		],
+		[
+			'name' => 'url',
+			'type' => 'string'
+		],
+		[
+			'name' => 'views',
+			'type' => 'int'
+		],
+		[
+			'name' => 'title',
+			'type' => 'string'
+		],
+		[
+			'name' => 'size',
+			'type' => 'string',
+			'nullable' => true
+		]
+	];
 }
